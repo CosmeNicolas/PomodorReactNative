@@ -3,34 +3,34 @@ import { StyleSheet, Text, View, SafeAreaView, Platform, TouchableOpacity } from
 import { useEffect, useState } from 'react';
 import Header from './src/components/Header';
 import Tiempo from './src/components/Tiempo';
-import {Audio} from 'expo-av'
 
-const colores = ["#EBD9B4","#9DBC98","#638889"]
+
+const colores = ["#EBD9B4", "#9DBC98", "#638889"]
 
 export default function App() {
   const [reloj, setReloj] = useState(false);
-  const [tiempo, setTiempo] = useState(25*60);
-  const [tiempoTranscurrido, setTiempotranscurrido] = useState('POMO'|'SHORT'|'BREAK');
-  const [activo, setActivo]=useState(false)
+  const [tiempo, setTiempo] = useState(25 * 60);
+  const [tiempoTranscurrido, setTiempotranscurrido] = useState('POMO' | 'SHORT' | 'BREAK');
+  const [activo, setActivo] = useState(false)
 
 
   useEffect(() => {
     let interval = null;
 
-    
-    if(activo){
+
+    if (activo) {
       //correr reloj 
       interval = setInterval(() => {
         setTiempo(tiempo - 1)
       }, 1000);
-    }else{
+    } else {
       //limpiar el intervalo
       clearInterval(interval)
     }
 
-    if(tiempo == 0) {
+    if (tiempo == 0) {
       setActivo(false);
-      setReloj(prev =>!prev);
+      setReloj(prev => !prev);
       setTiempo(reloj ? 300 : 1500)
     }
 
@@ -38,54 +38,37 @@ export default function App() {
 
 
   }, [activo, tiempo])
-  
 
-  const handleStartStop = ()=>{
-    playSound();
+
+  const handleStartStop = () => {
+
     setActivo(!activo)
   }
 
- async function playSound (){
-     try {
-    const { sound } = await Audio.Sound.createAsync(
-      require("./assets/click.wav")
-    );
 
-    await sound.playAsync();
-
-    // Esperar hasta que la reproducción termine o se pause
-     sound.setOnPlaybackStatusUpdate(async (status) => {
-      if (status.didJustFinish) {
-        await sound.unloadAsync(); // Liberar recursos cuando la reproducción termina
-      }
-    });
-  } catch (error) {
-    console.error("Error al reproducir el sonido:", error);
-  }
- }
   return (
-    <SafeAreaView style={[styles.container,{backgroundColor: colores[tiempoTranscurrido]}]}>
-    <View
-     style={
-      {
-        flex:1,
-        paddingHorizontal: 15,
-        paddingTop: Platform.OS === "android" && 30,
-       }}
-       >
-      <Text style={styles.text}>Pomodoro 🍅</Text>
-      <Header 
-      tiempoTranscurrido={tiempoTranscurrido}
-      setTiempo={setTiempo} 
-      setTiempotranscurrido={setTiempotranscurrido} />
-      <Tiempo tiempo={tiempo} />
-      <TouchableOpacity onPress={handleStartStop} style={styles.button}>
-        <Text style={{color: "white", fontWeight: "bold"}}>
-          {activo ? "STOP": "START"}
-        </Text>
-      </TouchableOpacity>
-    </View>
-    <StatusBar style="auto" />
+    <SafeAreaView style={[styles.container, { backgroundColor: colores[tiempoTranscurrido] }]}>
+      <View
+        style={
+          {
+            flex: 1,
+            paddingHorizontal: 15,
+            paddingTop: Platform.OS === "android" && 30,
+          }}
+      >
+        <Text style={styles.text}>Pomodoro 🍅</Text>
+        <Header
+          tiempoTranscurrido={tiempoTranscurrido}
+          setTiempo={setTiempo}
+          setTiempotranscurrido={setTiempotranscurrido} />
+        <Tiempo tiempo={tiempo} />
+        <TouchableOpacity onPress={handleStartStop} style={styles.button}>
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            {activo ? "STOP" : "START"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
@@ -96,7 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   text: {
-    fontSize: 32, 
+    fontSize: 32,
     fontWeight: 'bold',
     marginTop: 30
   },
