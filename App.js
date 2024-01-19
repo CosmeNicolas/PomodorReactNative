@@ -1,13 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
+import { useState } from 'react';
+
+const colors = ["#EBD9B4","#9DBC98","#638889"]
 
 export default function App() {
+  const [reloj, setReloj] = useState(false);
+  const [tiempo, setTiempo] = useState(25*60);
+  const [tiempoTranscurrido, setTiempotranscurrido] = useState('POMO'|'SHORT'|'BREAK');
+
+
+
   return (
-    <View style={styles.container}>
-      <Text>Pomodoro 🍅</Text>
-      <Button title='My Button'/>
+    <SafeAreaView style={styles.container}>
+    <View style={{paddingTop: Platform.OS === "android" && 30 }} >
+      <Text style={styles.text}>Pomodoro 🍅</Text>
+      <Text>{tiempo}</Text>
       <StatusBar style="auto" />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -15,7 +26,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 32, 
+    fontWeight: 'bold',
+    marginTop: 30
   },
 });
