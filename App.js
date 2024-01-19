@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Platform, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import Header from './src/components/Header';
 import Tiempo from './src/components/Tiempo';
@@ -10,20 +10,35 @@ export default function App() {
   const [reloj, setReloj] = useState(false);
   const [tiempo, setTiempo] = useState(25*60);
   const [tiempoTranscurrido, setTiempotranscurrido] = useState('POMO'|'SHORT'|'BREAK');
+  const [activo, setActivo]=useState(false)
 
-
+  const handleStartStop = ()=>{
+    setActivo(!activo)
+  }
 
   return (
     <SafeAreaView style={[styles.container,{backgroundColor: colores[tiempoTranscurrido]}]}>
-    <View style={{paddingTop: Platform.OS === "android" && 30 }} >
+    <View
+     style={
+      {
+        flex:1,
+        paddingHorizontal: 15,
+        paddingTop: Platform.OS === "android" && 30,
+       }}
+       >
       <Text style={styles.text}>Pomodoro 🍅</Text>
       <Header 
       tiempoTranscurrido={tiempoTranscurrido}
       setTiempo={setTiempo} 
       setTiempotranscurrido={setTiempotranscurrido} />
-      <StatusBar style="auto" />
-      <Tiempo/>
+      <Tiempo tiempo={tiempo} />
+      <TouchableOpacity onPress={handleStartStop} style={styles.button}>
+        <Text style={{color: "white", fontWeight: "bold"}}>
+          {activo ? "STOP": "START"}
+        </Text>
+      </TouchableOpacity>
     </View>
+    <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
@@ -38,4 +53,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 30
   },
+  button: {
+    backgroundColor: "#333333",
+    alignItems: "center",
+    padding: 15,
+    marginTop: 15,
+    borderRadius: 15,
+  }
 });
