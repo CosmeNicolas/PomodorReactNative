@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
 import { useState } from 'react';
+import Header from './src/components/Header';
 
 const colors = ["#EBD9B4","#9DBC98","#638889"]
 
@@ -15,7 +16,11 @@ export default function App() {
     <SafeAreaView style={styles.container}>
     <View style={{paddingTop: Platform.OS === "android" && 30 }} >
       <Text style={styles.text}>Pomodoro 🍅</Text>
-      <Text>{tiempo}</Text>
+      <Text style={styles.text}>{tiempo}</Text>
+      <Header 
+      tiempoTranscurrido={tiempoTranscurrido}
+      setTiempo={setTiempo} 
+      setTiempotranscurrido={setTiempotranscurrido} />
       <StatusBar style="auto" />
     </View>
     </SafeAreaView>
