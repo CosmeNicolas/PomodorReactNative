@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Platform, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './src/components/Header';
 import Tiempo from './src/components/Tiempo';
+import {Audio} from 'expo-av'
 
 const colores = ["#EBD9B4","#9DBC98","#638889"]
 
@@ -12,8 +13,43 @@ export default function App() {
   const [tiempoTranscurrido, setTiempotranscurrido] = useState('POMO'|'SHORT'|'BREAK');
   const [activo, setActivo]=useState(false)
 
+
+  useEffect(() => {
+    let interval = null;
+
+    
+    if(activo){
+      //correr reloj 
+      interval = setInterval(() => {
+        setTiempo(tiempo - 1)
+      }, 1000);
+    }else{
+      //limpiar el intervalo
+      clearInterval(interval)
+    }
+
+    if(tiempo == 0) {
+      setActivo(false);
+      setReloj(!reloj)
+      setTiempo(reloj ? 300 : 1500)
+    }
+
+    return () => clearInterval(interval)
+
+
+  }, [activo, tiempo])
+  
+
   const handleStartStop = ()=>{
+    playSound();
     setActivo(!activo)
+  }
+
+ async function playSound (){
+    const {sound} = await Audio.Sound.createAsync(
+      require("./assets/click.mp3")
+    )
+    await sound.playAsync();
   }
 
   return (
