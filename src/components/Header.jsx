@@ -17,8 +17,11 @@ const Header = ({ setTiempo, tiempoTranscurrido, setTiempotranscurrido }) => {
       {
         opciones.map((item, index) => (
 
-          <TouchableOpacity key={index} onPress={() => handlePress(index)} style={styles.itemStyle}>
-            <Text>
+          <TouchableOpacity
+           key={index} 
+           onPress={() => handlePress(index)} 
+            style={[styles.itemStyle, tiempoTranscurrido !== index && {borderColor: "transparent"}]}>
+            <Text style={{fontWeight: "bold"}}>
               {item}
             </Text>
           </TouchableOpacity>
@@ -31,8 +34,12 @@ const Header = ({ setTiempo, tiempoTranscurrido, setTiempotranscurrido }) => {
 const styles = StyleSheet.create({
   itemStyle: {
     borderWidth: 3,
+    alignItems: "center",
     padding: 5,
     width: "33%",
+    borderRadius: 10,
+    borderColor: "white",
+    marginVertical:20,
   }
 })
 

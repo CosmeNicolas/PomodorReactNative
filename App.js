@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
 import { useState } from 'react';
 import Header from './src/components/Header';
 
-const colors = ["#EBD9B4","#9DBC98","#638889"]
+const colores = ["#EBD9B4","#9DBC98","#638889"]
 
 export default function App() {
   const [reloj, setReloj] = useState(false);
@@ -13,7 +13,7 @@ export default function App() {
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container,{backgroundColor: colores[tiempoTranscurrido]}]}>
     <View style={{paddingTop: Platform.OS === "android" && 30 }} >
       <Text style={styles.text}>Pomodoro 🍅</Text>
       <Text style={styles.text}>{tiempo}</Text>
