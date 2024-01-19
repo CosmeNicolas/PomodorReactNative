@@ -30,7 +30,7 @@ export default function App() {
 
     if(tiempo == 0) {
       setActivo(false);
-      setReloj(!reloj)
+      setReloj(prev =>!prev);
       setTiempo(reloj ? 300 : 1500)
     }
 
@@ -46,12 +46,23 @@ export default function App() {
   }
 
  async function playSound (){
-    const {sound} = await Audio.Sound.createAsync(
-      require("./assets/click.mp3")
-    )
-    await sound.playAsync();
-  }
+     try {
+    const { sound } = await Audio.Sound.createAsync(
+      require("./assets/click.wav")
+    );
 
+    await sound.playAsync();
+
+    // Esperar hasta que la reproducción termine o se pause
+     sound.setOnPlaybackStatusUpdate(async (status) => {
+      if (status.didJustFinish) {
+        await sound.unloadAsync(); // Liberar recursos cuando la reproducción termina
+      }
+    });
+  } catch (error) {
+    console.error("Error al reproducir el sonido:", error);
+  }
+ }
   return (
     <SafeAreaView style={[styles.container,{backgroundColor: colores[tiempoTranscurrido]}]}>
     <View
