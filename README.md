@@ -9,8 +9,6 @@ Para clonar el repositorio, utiliza el siguiente comando en tu terminal:
 ```bash
 git clone https://github.com/CosmeNicolas/PomodorReactNative.git
 
-
-
 Después de clonar el repositorio, navega al directorio del proyecto:
 
 cd pomodoro-app
